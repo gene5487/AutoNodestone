@@ -43,7 +43,7 @@ I want to fully level 'Dragon Vein Absorption', 'Dragon Vein Eruption', 'Essence
 
 
 
-## ❤Specil thanks
+## ❤Special thanks
 - Source of skill icon image : [NodestoneBuilder repository](https://github.com/PhantasmicSky/NodestoneBuilder)
 - Thank my classmates in NTUST for disscusing how to formulate the problem with me.
 - Thank Prof. S.-Y. Fang. I learned ILP and some useful programing skills in the EDA course.
