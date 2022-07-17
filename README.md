@@ -1,5 +1,5 @@
 # AutoNodestone
-Python program for MapleStory that help palyer find ideal combination of Nodestones.
+Python program for MapleStory that help palyer find ideal combination of [Nodestones](https://maplestory.nexon.net/micro-site/59387).
 
 - Uses [PyAutoGUI](https://pypi.org/project/PyAutoGUI/) to automatic identify Nodestone Skills.  
 - Formulates the combination problem as an [integer linear programming (ILP)](https://en.wikipedia.org/wiki/Linear_programming) problem .
