@@ -1,0 +1,4 @@
+keyboard==0.13.5
+playsound==1.2.2
+PuLP==2.6.0
+PyAutoGUI==0.9.53
