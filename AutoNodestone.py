@@ -17,8 +17,10 @@ def sound_effect(sound_type):
 
 
 print("==========Stage 1 : Select your job==========")
-Tk().withdraw()
-my_job_path = askdirectory(title='Select your job', initialdir=r'./skill_icon')
+root = Tk()
+root.withdraw()
+root.wm_attributes('-topmost', 1)
+my_job_path = askdirectory(title='Select your job', initialdir=r'./skill_icon', parent=root)
 skill_img_list = [rf"{my_job_path}/{img_name}" for img_name in listdir(my_job_path) if isfile(rf"{my_job_path}/{img_name}")]
 print(skill_img_list)
 print(f'You are {my_job_path.split("/")[-1]}')
@@ -98,7 +100,7 @@ while K != 'e':
 
 
 print("==========Stage 3 : Choose your required skill==========")
-required_skill_name_list = askopenfilenames(filetypes=[('image files', '.png')], initialdir=my_job_path)
+required_skill_name_list = askopenfilenames(filetypes=[('image files', '.png')], initialdir=my_job_path, parent=root)
 for required_skill_name in required_skill_name_list:
     required_skill.append(skill_img_list.index(required_skill_name))
 skill_name = []
