@@ -12,12 +12,16 @@ Python program for MapleStory that help palyer find ideal combination of Nodesto
 ```
 pip install -r requirements.txt
 ```
+>Note :
+>A standalone standalone executable (**AutoNodestone.exe**) is provided for those who don't want to setup envirment on their computer. 
+>This .exe file is created from python script (**AutoNodestone.py**) using [PyInstaller](https://pypi.org/project/pyinstaller/)
 
 ## 🕹Usage
 Inside your AutoNodestone directory, open a command prompt and run : 
 ```
 python AutoNodestone.py
 ```
+or just doble click **AutoNodestone.exe**
 
 >Note : 
 >**Program can't read keyboard input when MapleStroy window is focused (i.e. when the last window you click in is MapleStroy).**
