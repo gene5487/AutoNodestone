@@ -17,7 +17,7 @@ pip install -r requirements.txt
 >🙌Note :\
 >For user's convenience, a standalone standalone executable (**AutoNodestone.exe**) is provided.\
 >You can execute the program without setup envierment.\
->This .exe file is created from python script (**AutoNodestone.py**) using [PyInstaller](https://pypi.org/project/pyinstaller/)
+>This .exe file is created from python script (**AutoNodestone.py**) using [PyInstaller](https://pypi.org/project/pyinstaller/).
 
 
 
