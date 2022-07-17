@@ -1,6 +1,8 @@
 # AutoNodestone
-Python program for MapleStory that help palyer find ideal combination of Nodestones. 
+Python program for MapleStory that help palyer find ideal combination of Nodestones.
+
 Uses PyAutoGUI to automatic identify Nodestone Skills.  
+
 Uses PuLP to solve the combination problem.
 
 Setup:
