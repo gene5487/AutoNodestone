@@ -141,3 +141,4 @@ for v in prob.variables():
         print(f'Nodestone {trinode_index} : {skill_name}')
 
 print("Minimal value of objective function (i.e. #Nodestone needed)= ", pulp.value(prob.objective))  # 輸出最優解的目標函數值
+123
