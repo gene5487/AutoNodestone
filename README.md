@@ -19,6 +19,12 @@ Inside your AutoNodestone directory, open a command prompt and run :
 python AutoNodestone.py
 ```
 
+>Note : 
+>**Program can't read keyboard input when MapleStroy window is focused (i.e. when the last window you click in is MapleStroy).**
+>You may click desktop or other window to let MapleStroy lose focus, so that you can input to the program.
+
+ 
+ 
 ## 👀Demonstration
 I have 10 Nodestones, 
 
