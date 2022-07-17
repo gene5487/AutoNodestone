@@ -21,15 +21,14 @@ root = Tk()
 root.withdraw()
 root.wm_attributes('-topmost', 1)
 my_job_path = askdirectory(title='Select your job', initialdir=r'./skill_icon', parent=root)
-skill_img_list = [rf"{my_job_path}/{img_name}" for img_name in listdir(my_job_path) if isfile(rf"{my_job_path}/{img_name}")]
-print(skill_img_list)
+skill_img_list = [rf"{my_job_path}/{img_name}" for img_name in listdir(my_job_path) if
+                  isfile(rf"{my_job_path}/{img_name}")]
 print(f'You are {my_job_path.split("/")[-1]}')
 n_skill = len(skill_img_list)
 n_trinode = 0
 trinode_skill = []
 trinode_first = []
 required_skill = []
-
 
 print("==========Stage 2 : Input your Nodestone==========")
 print("Put cursor on the Nodestone to show the 3 skill icon, let program scan through all Nodestone you have")
@@ -61,7 +60,7 @@ while K != 'e':
         top_skill_index = -1
         for i, skill_icon in enumerate(skill_img_list):
             cursor_position = pyautogui.position()
-            scan_region = [cursor_position[0]-10, cursor_position[1], 120, 210]
+            scan_region = [cursor_position[0] - 10, cursor_position[1], 120, 240]
             pyautogui.screenshot('scan_region.png', region=scan_region)
             position = pyautogui.locateCenterOnScreen(skill_icon, region=scan_region, confidence=0.8)
             if position is not None:
@@ -98,7 +97,6 @@ while K != 'e':
     # print(trinode_skill)
     K = keyboard.read_key()
 
-
 print("==========Stage 3 : Choose your required skill==========")
 required_skill_name_list = askopenfilenames(filetypes=[('image files', '.png')], initialdir=my_job_path, parent=root)
 for required_skill_name in required_skill_name_list:
@@ -108,36 +106,41 @@ for skill_index in required_skill:
     skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
 print(f'Your required skill [{len(skill_name)}] : {skill_name}')
 
-
 print("==========Stage 4 : Finding ideal combination==========")
 prob = pulp.LpProblem("trinode_combination", sense=pulp.LpMinimize)
 trinode_select_var = pulp.LpVariable.dicts('trinode_select', range(0, n_trinode), cat='Binary')
 prob += pulp.lpSum(trinode_select_var)  # objective function, 最小化選用的核心數
 for skill in required_skill:
     # 在所有選用的核心所強化的技能中，所有required_skill都需至少出現2次
-    prob += pulp.lpSum([trinode_select_var[trinode]*trinode_skill[trinode][skill] for trinode in range(n_trinode)]) >= 2
+    prob += pulp.lpSum(
+        [trinode_select_var[trinode] * trinode_skill[trinode][skill] for trinode in range(n_trinode)]) >= 2
 for skill in range(n_skill):
     # 在所有選用的核心所強化的技能中，每個核心的第一個技能不能重複
-    prob += pulp.lpSum([trinode_select_var[trinode]*trinode_first[trinode][skill] for trinode in range(n_trinode)]) <= 1
+    prob += pulp.lpSum(
+        [trinode_select_var[trinode] * trinode_first[trinode][skill] for trinode in range(n_trinode)]) <= 1
 prob.solve()
 
-
 print("==========Result==========")
-print("Status:", pulp.LpStatus[prob.status])  # 輸出求解狀態
+print("Solve status:", pulp.LpStatus[prob.status])  # 輸出求解狀態
 
+if prob.status == pulp.LpStatusOptimal:
+    if pulp.value(prob.objective) == len(skill_name) * 2 / 3.0:
+        print("You got PERFECT Nodestone combination ! ")
+    print("Minimal number of Nodestone needed = ", int(pulp.value(prob.objective)))  # 輸出最優解的目標函數值
 
-for v in prob.variables():
-    # print(v.name, "=", v.varValue)  # 輸出每個變數的最優值
-    if v.varValue == 1:
-        trinode_index = int(v.name.split('_')[-1])
-        skill_indices = [i for i, x in enumerate(trinode_skill[trinode_index]) if x == 1]
-        skill_name = []
-        for skill_index in skill_indices:
-            if trinode_first[trinode_index][skill_index] == 1:
-                skill_name.append(f"【{skill_img_list[skill_index].split('/')[-1].split('.')[0]}】")
-            else:
-                skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
+    print("The following Nodestones combination can meet your requirement with minimal number of Nodestone.")
+    for v in prob.variables():
+        # print(v.name, "=", v.varValue)  # 輸出每個變數的最優值
+        if v.varValue == 1:
+            trinode_index = int(v.name.split('_')[-1])
+            skill_indices = [i for i, x in enumerate(trinode_skill[trinode_index]) if x == 1]
+            skill_name = []
+            for skill_index in skill_indices:
+                if trinode_first[trinode_index][skill_index] == 1:
+                    skill_name.append(f"【{skill_img_list[skill_index].split('/')[-1].split('.')[0]}】")
+                else:
+                    skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
+            print(f'Nodestone {trinode_index} : {skill_name}')
 
-        print(f'Nodestone {trinode_index} : {skill_name}')
-
-print("Minimal value of objective function (i.e. #Nodestone needed)= ", pulp.value(prob.objective))  # 輸出最優解的目標函數值
+else:
+    print("None of Nodestone combination can meet your requirement !")
