@@ -1,6 +1,7 @@
 from tkinter.filedialog import askopenfilename, askopenfilenames, askdirectory
 from tkinter import Tk
 import pyautogui
+from os import system
 from os import listdir
 from os.path import isfile
 import keyboard
@@ -144,3 +145,5 @@ if prob.status == pulp.LpStatusOptimal:
 
 else:
     print("None of Nodestone combination can meet your requirement !")
+    
+system("pause")
