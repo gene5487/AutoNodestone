@@ -31,7 +31,9 @@ Just doble click **AutoNodestone.exe**
 
 >❗Note :\
 >**Program can't read keyboard input when MapleStroy window is focused (i.e. when the last window you click in is MapleStroy).**\
->You may click desktop or other window to let MapleStroy lose focus, so that you can input to the program.
+>You may click desktop or other window to let MapleStroy lose focus, so that you can input to the program.\
+>OR\
+>Run CMD or **AutoNodestone.exe** as administrator should solve this problem.
 
  
  
@@ -40,6 +42,11 @@ I have 10 Nodestones, \
 I want to fully level 'Dragon Vein Absorption', 'Dragon Vein Eruption', 'Essence Sprinkle' using minimal slots.
 
 ![image](https://github.com/gene5487/AutoNodestone/blob/master/demonstration.gif)
+
+
+
+## 📃Further information
+Please refer to https://forum.gamer.com.tw/Co.php?bsn=07650&sn=6415998. (Written in Traditional Chinese)
 
 
 
