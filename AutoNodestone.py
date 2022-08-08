@@ -80,19 +80,18 @@ def locate_25node_at_once(skill_icon_path_list, page, n_trinode_inlist):
     trinode_skill = [trinode_skill[i] for i in scanned_ok_indices]
     trinode_first = [trinode_first[i] for i in scanned_ok_indices]
 
-    print("processing img")
     img = Image.open(scrennshot_name)
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("arial.ttf", 32)
     for i, position in enumerate(trinode_position):
-        w, h = draw.textsize(f"{n_trinode_inlist + i}", font=font)
+        [x0, y0, x1, y1] = draw.textbbox(xy=(0, 0), text=f"{n_trinode_inlist + i}", font=font)
+        w = x1 - x0
         # xy=(top, left) of text,
         # I want that "middle of text" align to "middle of trinode" icon for different digit text
         draw.text(xy=((position[0]+12)-(w/2), position[1]+10), text=f"{n_trinode_inlist + i}",
                   font=font, fill=(255, 255, 255), stroke_width=3, stroke_fill=(0, 0, 0))
 
     img.save(scrennshot_name)
-    print("processing img done")
     return trinode_name_list, trinode_skill, trinode_first
 
 
