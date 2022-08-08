@@ -1,11 +1,16 @@
 # AutoNodestone
 Python program for MapleStory that help palyer find ideal combination of [Nodestones](https://maplestory.nexon.net/micro-site/59387).
 
-- Uses [PyAutoGUI](https://pypi.org/project/PyAutoGUI/) to automatic identify Nodestone Skills.  
-- Formulates the combination problem as an [integer linear programming (ILP)](https://en.wikipedia.org/wiki/Linear_programming) problem .
-- Uses [PuLP](https://pypi.org/project/PuLP/) to solve ILP problem.
+- Uses [PyAutoGUI](https://pypi.org/project/PyAutoGUI/) to automatic identify Nodestone Skills.
+- Formulates the combination problem as an [Zero-one integer linear programming(0-1 ILP)](https://en.wikipedia.org/wiki/Integer_programming#Variants) problem.
+- Uses [PuLP](https://pypi.org/project/PuLP/) to solve the 0-1 ILP problem.
 
-
+## ✅Features
+- Nodestone Skills identification is based on [Template Matching](https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html), \
+which theoretically **supports all languages** (as long as all Maplestory server share same skill icon).
+- Batch scan all the 25 Nodestones on V-martix UI at once.
+- Generates screenshot with number label on each identified Nodestone, \
+it helps user easily find out which Nodestone is in thier ideal combination. (See [Another demonstration](https://github.com/gene5487/AutoNodestone/edit/master/README.md#another-demonstration))
 
 ## 🔨Setup 
 1. Download and install Python3.
@@ -39,9 +44,17 @@ Just doble click **AutoNodestone.exe**
  
 ## 👀Demonstration
 I have 10 Nodestones, \
-I want to fully level 'Dragon Vein Absorption', 'Dragon Vein Eruption', 'Essence Sprinkle' using minimal slots.
+I want to fully level 'Dragon Vein Absorption', 'Dragon Vein Eruption', 'Essence Sprinkle' using minimal slots.\
+\
+<img src="https://github.com/gene5487/AutoNodestone/blob/master/demonstration.gif" width="800">
 
-![image](https://github.com/gene5487/AutoNodestone/blob/master/demonstration.gif)
+
+
+## 👀Another demonstration 
+Batch scan & screenshot feature is shown.\
+\
+<img src="https://github.com/gene5487/AutoNodestone/blob/master/demonstration_batchscan.gif" width="800">
+
 
 
 
@@ -54,3 +67,4 @@ Please refer to https://forum.gamer.com.tw/Co.php?bsn=07650&sn=6415998. (Written
 - Source of skill icon image : [NodestoneBuilder repository](https://github.com/PhantasmicSky/NodestoneBuilder)
 - Thank my classmates in NTUST for disscusing how to formulate the problem with me.
 - Thank Prof. S.-Y. Fang. I learned ILP and some useful programing skills in the EDA course.
+- Thank 星星(peggy7992) gave me helpful advise, which help me come up with batch identify method.
