@@ -10,7 +10,7 @@ Python program for MapleStory that help palyer find ideal combination of [Nodest
 which theoretically **supports all languages** (as long as all Maplestory server share same skill icon).
 - Batch scan all the 25 Nodestones on V-martix UI at once.
 - Generates screenshot with number label on each identified Nodestone, \
-it helps user easily find out which Nodestone is in thier ideal combination. (See [Another demonstration](https://github.com/gene5487/AutoNodestone/edit/master/README.md#another-demonstration))
+it helps user easily find out which Nodestone is in thier ideal combination. (See [Another demonstration](#another-demonstration))
 
 ## 🔨Setup 
 1. Download and install Python3.
