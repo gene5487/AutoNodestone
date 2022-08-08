@@ -9,6 +9,9 @@ import pulp
 from playsound import playsound
 import pickle
 import cv2
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
 
 
 # parameters for locate_25node_at_once
@@ -31,24 +34,19 @@ def sound_effect(sound_type):
         playsound(rf'./sound/Maplestory-010.wav', block=False)
 
 
-def locate_25node_at_once(skill_icon_path_list):  # m is #skill of the job
-    bl_skill_img_list = [cv2.imread(img)[bl_cor[1]: bl_cor[1] + tm_cor[3], bl_cor[0]:bl_cor[0] + bl_cor[2]]
-                         for img in skill_icon_path_list]
-    tm_skill_img_list = [cv2.imread(img)[tm_cor[1]: tm_cor[1] + tm_cor[3], tm_cor[0]:tm_cor[0] + tm_cor[2]]
-                         for img in skill_icon_path_list]
-    br_skill_img_list = [cv2.imread(img)[br_cor[1]: br_cor[1] + br_cor[3], br_cor[0]:br_cor[0] + br_cor[2]]
-                         for img in skill_icon_path_list]
-    skill_name_list = [rf'{img.split("/")[-1].split(".")[0]}'
-                       for img in skill_icon_path_list]
-    all_partial_skill_img_list = [bl_skill_img_list, tm_skill_img_list, br_skill_img_list]
-    part_list = ['bl', 'tm', 'br']
-
+def locate_25node_at_once(skill_icon_path_list, page, n_trinode_inlist):
     query_icon_position = pyautogui.locateCenterOnScreen('./template_icon/query_icon.jpg', confidence=0.8)
-    v_matrix_region = [query_icon_position[0] + 20, query_icon_position[1] - 470, 380, 380]
-    pyautogui.screenshot(rf'./v_matrix_region.jpg', region=v_matrix_region)
+    if query_icon_position is None:
+        print('Unable to detect 25-core-per-page UI. Did you talk to V core master?')
+        return [], [], []
+    v_matrix_region = [query_icon_position[0] + 20, query_icon_position[1] - 470, 375, 405]
+    scrennshot_name = rf'./V-matrix_{my_job}_{page}.jpg'
+    pyautogui.screenshot(scrennshot_name, region=v_matrix_region)
 
-    # [[], [], []......], record skill name
+    # [["skill_name"], ["skill_name"], ["skill_name"]......], record skill name
     trinode_name_list = [[] for _ in range(25)]
+    # [[x, y], [x, y]......], record position of trinode's bl part
+    trinode_position = [[] for _ in range(25)]
     # [[0,0,......], [0,0,......],......], one-hot code which records the 3 skills of this trinode
     trinode_skill = [[0 for _ in range(len(skill_icon_path_list))] for _ in range(25)]
     trinode_first = [[0 for _ in range(len(skill_icon_path_list))] for _ in range(25)]
@@ -68,8 +66,9 @@ def locate_25node_at_once(skill_icon_path_list):  # m is #skill of the job
                 index = trinode_index_connvert_table[row][col]
                 trinode_name_list[index].append(skill_name)
                 trinode_skill[index][j] = 1
-                if i == 0:  # br, first skill
+                if i == 0:  # bl, first skill
                     trinode_first[index][j] = 1
+                    trinode_position[index] = [position[0] - v_matrix_region[0], position[1] - v_matrix_region[1]]
 
     for trinode in trinode_name_list:
         if len(trinode) == 2:
@@ -77,11 +76,23 @@ def locate_25node_at_once(skill_icon_path_list):  # m is #skill of the job
                   "please make sure all trinode is unlocked before scanning.")
     scanned_ok_indices = [i for i in range(len(trinode_name_list)) if len(trinode_name_list[i]) == 3]
     trinode_name_list = [trinode_name_list[i] for i in scanned_ok_indices]
+    trinode_position = [trinode_position[i] for i in scanned_ok_indices]
     trinode_skill = [trinode_skill[i] for i in scanned_ok_indices]
     trinode_first = [trinode_first[i] for i in scanned_ok_indices]
-    # print(trinode_name_list)
-    # print(trinode_first)
-    # print(trinode_skill)
+
+    print("processing img")
+    img = Image.open(scrennshot_name)
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("arial.ttf", 32)
+    for i, position in enumerate(trinode_position):
+        w, h = draw.textsize(f"{n_trinode_inlist + i}", font=font)
+        # xy=(top, left) of text,
+        # I want that "middle of text" align to "middle of trinode" icon for different digit text
+        draw.text(xy=((position[0]+12)-(w/2), position[1]+10), text=f"{n_trinode_inlist + i}",
+                  font=font, fill=(255, 255, 255), stroke_width=3, stroke_fill=(0, 0, 0))
+
+    img.save(scrennshot_name)
+    print("processing img done")
     return trinode_name_list, trinode_skill, trinode_first
 
 
@@ -90,13 +101,27 @@ root = Tk()
 root.withdraw()
 root.wm_attributes('-topmost', 1)
 my_job_path = askdirectory(title='Select your job', initialdir=r'./skill_icon', parent=root)
+my_job = my_job_path.split("/")[-1]
+print(f'You are {my_job}')
+
 skill_img_list = [rf"{my_job_path}/{img_name}" for img_name in listdir(my_job_path) if
                   isfile(rf"{my_job_path}/{img_name}")]
-print(f'You are {my_job_path.split("/")[-1]}')
 n_skill = len(skill_img_list)
 trinode_skill = []
 trinode_first = []
-required_skill = []
+
+# variable for locate_25node_at_once
+bl_skill_img_list = [cv2.imread(img)[bl_cor[1]: bl_cor[1] + tm_cor[3], bl_cor[0]:bl_cor[0] + bl_cor[2]]
+                     for img in skill_img_list]
+tm_skill_img_list = [cv2.imread(img)[tm_cor[1]: tm_cor[1] + tm_cor[3], tm_cor[0]:tm_cor[0] + tm_cor[2]]
+                     for img in skill_img_list]
+br_skill_img_list = [cv2.imread(img)[br_cor[1]: br_cor[1] + br_cor[3], br_cor[0]:br_cor[0] + br_cor[2]]
+                     for img in skill_img_list]
+skill_name_list = [rf'{img.split("/")[-1].split(".")[0]}'
+                   for img in skill_img_list]
+all_partial_skill_img_list = [bl_skill_img_list, tm_skill_img_list, br_skill_img_list]
+part_list = ['bl', 'tm', 'br']
+page = 0
 
 print("==========Stage 2 : Input your Nodestone==========")
 print("Let program scan through all Nodestone you have\n")
@@ -161,69 +186,81 @@ while K != 'e':
             sound_effect(0)
 
     elif K == 'b':
-        new_trinode_name_list, new_trinode_skill, new_trinode_first = locate_25node_at_once(skill_img_list)
+        new_trinode_name_list, new_trinode_skill, new_trinode_first \
+            = locate_25node_at_once(skill_icon_path_list=skill_img_list, page=page, n_trinode_inlist=len(trinode_skill))
         if len(new_trinode_skill) != 0:
             trinode_skill.extend(new_trinode_skill)
             trinode_first.extend(new_trinode_first)
-            # n_trinode += len(new_trinode_skill)
 
             for trinode_name in new_trinode_name_list:
                 print(trinode_name)
-            print(rf'{len(new_trinode_skill)} Nodestone are detected')
+            page += 1
             sound_effect(1)
         else:
-            print("Unable to detect any Nodestone !")
             sound_effect(0)
+        print(rf'{len(new_trinode_skill)} Nodestone are detected')
 
     K = keyboard.read_key()
 
-print("==========Stage 3 : Choose your required skill==========")
-required_skill_name_list = askopenfilenames(filetypes=[('image files', '.png')], initialdir=my_job_path, parent=root)
-for required_skill_name in required_skill_name_list:
-    required_skill.append(skill_img_list.index(required_skill_name))
-skill_name = []
-for skill_index in required_skill:
-    skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
-print(f'Your required skill [{len(skill_name)}] : {skill_name}')
+while True:
+    print("==========Stage 3 : Choose your required skill==========")
+    required_skill = []
+    required_skill_name_list = askopenfilenames(filetypes=[('image files', '.png')], initialdir=my_job_path, parent=root)
+    for required_skill_name in required_skill_name_list:
+        required_skill.append(skill_img_list.index(required_skill_name))
+    skill_name = []
+    for skill_index in required_skill:
+        skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
+    print(f'Your required skill [{len(skill_name)}] : {skill_name}')
 
-print("==========Stage 4 : Finding ideal combination==========")
-n_trinode = len(trinode_skill)
-prob = pulp.LpProblem("trinode_combination", sense=pulp.LpMinimize)
-trinode_select_var = pulp.LpVariable.dicts('trinode_select', range(0, n_trinode), cat='Binary')
-prob += pulp.lpSum(trinode_select_var)  # objective function, 最小化選用的核心數
-for skill in required_skill:
-    # 在所有選用的核心所強化的技能中，所有required_skill都需至少出現2次
-    prob += pulp.lpSum(
-        [trinode_select_var[trinode] * trinode_skill[trinode][skill] for trinode in range(n_trinode)]) >= 2
-for skill in range(n_skill):
-    # 在所有選用的核心所強化的技能中，每個核心的第一個技能不能重複
-    prob += pulp.lpSum(
-        [trinode_select_var[trinode] * trinode_first[trinode][skill] for trinode in range(n_trinode)]) <= 1
-prob.solve()
+    print("==========Stage 4 : Finding ideal combination==========")
+    n_trinode = len(trinode_skill)
+    prob = pulp.LpProblem("trinode_combination", sense=pulp.LpMinimize)
+    trinode_select_var = pulp.LpVariable.dicts('trinode_select', range(0, n_trinode), cat='Binary')
+    prob += pulp.lpSum(trinode_select_var)  # objective function, 最小化選用的核心數
+    for skill in required_skill:
+        # 在所有選用的核心所強化的技能中，所有required_skill都需至少出現2次
+        prob += pulp.lpSum(
+            [trinode_select_var[trinode] * trinode_skill[trinode][skill] for trinode in range(n_trinode)]) >= 2
+    for skill in range(n_skill):
+        # 在所有選用的核心所強化的技能中，每個核心的第一個技能不能重複
+        prob += pulp.lpSum(
+            [trinode_select_var[trinode] * trinode_first[trinode][skill] for trinode in range(n_trinode)]) <= 1
+    prob.solve(pulp.PULP_CBC_CMD(msg=False))
 
-print("==========Result==========")
-print("Solve status:", pulp.LpStatus[prob.status])  # 輸出求解狀態
+    print("==========Result==========")
+    print("Solve status:", pulp.LpStatus[prob.status])  # 輸出求解狀態
 
-if prob.status == pulp.LpStatusOptimal:
-    if pulp.value(prob.objective) == len(skill_name) * 2 / 3.0:
-        print("You got PERFECT Nodestone combination ! ")
-    print("Minimal number of Nodestone needed = ", int(pulp.value(prob.objective)))  # 輸出最優解的目標函數值
+    if prob.status == pulp.LpStatusOptimal:
+        print("Minimal number of Nodestone needed = ", int(pulp.value(prob.objective)))  # 輸出最優解的目標函數值
+        if pulp.value(prob.objective) == len(skill_name) * 2 / 3.0:
+            print("You got PERFECT Nodestone combination ! ")
 
-    print("The following Nodestones combination can meet your requirement with minimal number of Nodestone.")
-    for v in prob.variables():
-        # print(v.name, "=", v.varValue)  # 輸出每個變數的最優值
-        if v.varValue == 1:
-            trinode_index = int(v.name.split('_')[-1])
-            skill_indices = [i for i, x in enumerate(trinode_skill[trinode_index]) if x == 1]
-            skill_name = []
-            for skill_index in skill_indices:
-                if trinode_first[trinode_index][skill_index] == 1:
-                    skill_name.append(f"【{skill_img_list[skill_index].split('/')[-1].split('.')[0]}】")
-                else:
-                    skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
-            print(f'Nodestone {trinode_index} : {skill_name}')
+        print("\nThe following Nodestones combination can meet your requirement with minimal number of Nodestone.")
+        for v in prob.variables():
+            # print(v.name, "=", v.varValue)  # 輸出每個變數的最優值
+            if v.varValue == 1:
+                trinode_index = int(v.name.split('_')[-1])
+                skill_indices = [i for i, x in enumerate(trinode_skill[trinode_index]) if x == 1]
+                skill_name = []
+                for skill_index in skill_indices:
+                    if trinode_first[trinode_index][skill_index] == 1:
+                        skill_name.append(f"【{skill_img_list[skill_index].split('/')[-1].split('.')[0]}】")
+                    else:
+                        skill_name.append(skill_img_list[skill_index].split('/')[-1].split('.')[0])
+                print(f'Nodestone {trinode_index} : {skill_name}')
 
-else:
-    print("None of Nodestone combination can meet your requirement !")
+    else:
+        print("None of Nodestone combination can meet your requirement !")
+
+    print("\nPress 'r' to retry Stage3~4")
+    print("Press 'q' to end this program")
+
+    while True:
+        K = keyboard.read_key()
+        if K == 'r' or K == 'q':
+            break
+    if K == 'q':
+        break
 
 system("pause")
