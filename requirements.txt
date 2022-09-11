@@ -1,7 +1,7 @@
-keyboard==0.13.5
 numpy==1.23.1
 opencv_python==4.5.3.56
 Pillow==9.2.0
 playsound==1.2.2
 PuLP==2.6.0
 PyAutoGUI==0.9.53
+PyQt5==5.15.7
