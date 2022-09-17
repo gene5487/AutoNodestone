@@ -11,7 +11,7 @@ Python program for MapleStory that help palyer find ideal combination of [Nodest
 - Nodestone Skills identification is based on [Template Matching](https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html), \
 which theoretically **supports all languages** (as long as all Maplestory server share same skill icon).
 - Batch scan all the 11 Nodestones on V-martix UI at once without any manual input.
-- Intuitive and convenience UI. (See [Usage](usage))
+- Intuitive and convenience UI. (See [Usage](https://github.com/gene5487/AutoNodestone/blob/master/README.md#usage))
 
 
 ## 🔨Setup 
