@@ -4,7 +4,8 @@ Python program for MapleStory that help palyer find ideal combination of [Nodest
 - Uses [PyAutoGUI](https://pypi.org/project/PyAutoGUI/) to automatic identify Nodestone Skills.
 - Formulates the combination problem as an [Zero-one integer linear programming(0-1 ILP)](https://en.wikipedia.org/wiki/Integer_programming#Variants) problem.
 - Uses [PuLP](https://pypi.org/project/PuLP/) to solve the 0-1 ILP problem.
-- Uses [PyQt5](https://pypi.org/project/PyQt5/) as user interface.
+- Uses [PyQt5](https://pypi.org/project/PyQt5/) to build user interface.
+- Uses [PyInstaller](https://pypi.org/project/pyinstaller/) to create .exe file.
 
 
 ## ✅Features
@@ -15,16 +16,17 @@ which theoretically **supports all languages** (as long as all Maplestory server
 
 
 ## 🔨Setup 
+
+>🙌Note :\
+>For user's convenience, a executable (**AutoNodestone_PyQt_start.exe**) is provided.\
+>You can execute the program without setting-up Python envierment.
+
 1. Download and install Python3.
-2. Download and unzip AutoNodestone.
+2. Download and unzip whole AutoNodestone folder.
 3. Inside your AutoNodestone directory, open a command prompt and run : 
 ```
 pip install -r requirements.txt
 ```
->🙌Note :\
->For user's convenience, a standalone standalone executable (**AutoNodestone_PyQt_start.exe**) is provided.\
->You can execute the program without setting-up envierment.\
->This .exe file is created from python script (**AutoNodestone_PyQt_start.py**) using [PyInstaller](https://pypi.org/project/pyinstaller/).
 
 
 ## 🕹Usage
@@ -35,8 +37,8 @@ python AutoNodestone_PyQt_start.py
 OR\
 Just doble click **AutoNodestone_PyQt_start.exe**
 <br/>
-
 <br/>
+
 And then follow the instruction below :
 
  1. Select the job of your charater.
@@ -62,7 +64,7 @@ https://user-images.githubusercontent.com/58682521/190847892-e79339c5-fca3-4f98-
 <br/>
 <br/>
 
- 4. Select your required skills in  `Skill selection` area.\ and get combination by clicking `Get combination`.
+ 4. Select your required skills in  `Skill selection` area, and get combination by clicking `Get combination`.
 
 https://user-images.githubusercontent.com/58682521/190847901-8cc73b60-ec3b-4a0a-bdf2-2ae647388372.mp4
 
@@ -72,10 +74,27 @@ https://user-images.githubusercontent.com/58682521/190847901-8cc73b60-ec3b-4a0a-
 
  5. Equip the Nodestones in the combination.
 
-https://user-images.githubusercontent.com/58682521/190847908-64d81bcb-2711-4c6f-a9b6-28dcff94595c.mp4
+[123](https://user-images.githubusercontent.com/58682521/190847908-64d81bcb-2711-4c6f-a9b6-28dcff94595c.mp4)
 
 <br/>
 <br/>
+
+## 🤔How program evaluate combination?
+A *valid combination* must not violate the rules :
+
+1. Nodes with the same main skills(skill that appear on first row) can not appear more than once.
+2. Each required skills(selected by user) must appear at least twice.
+
+**Program will find 3 different *valid combinations* with minimal number of Nodes.**
+<br/>
+<br/>
+
+Because Nodes with the same main skill can be stacked and enhanced, if there are several *valid combination* with same number of Nodes,\
+**the combination with higher stack count will has higer priority**.
+
+![stack count and priority example](https://user-images.githubusercontent.com/58682521/192094914-6e8d4ffd-91e3-4b6d-985a-9f5c0eec181c.PNG)
+
+
 
 ## 📃Further information
 Please refer to https://forum.gamer.com.tw/Co.php?bsn=07650&sn=6415998. (Written in Traditional Chinese)
