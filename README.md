@@ -89,7 +89,7 @@ A *valid combination* must not violate the rules :
 <br/>
 <br/>
 
-Because Nodes with the same main skill can be stacked and enhanced, if there are several *valid combination* with same number of Nodes,\
+Because Nodes with the same main skill can be stacked and enhanced, if there are several *valid combinations* with same number of Nodes,\
 **the combination with higher stack count will has higer priority**.
 
 ![stack count and priority example](https://user-images.githubusercontent.com/58682521/192094914-6e8d4ffd-91e3-4b6d-985a-9f5c0eec181c.PNG)
