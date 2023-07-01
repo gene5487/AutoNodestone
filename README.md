@@ -21,13 +21,19 @@ which theoretically **supports all languages** (as long as all Maplestory server
 >For user's convenience, a executable (**AutoNodestone_PyQt_start.exe**) is provided.\
 >You can execute the program without setting-up Python envierment.
 
-1. Download and install Python3.
+1. Download and install `Python3.9`.
 2. Download and unzip whole AutoNodestone folder.
 3. Inside your AutoNodestone directory, open a command prompt and run : 
 ```
 pip install -r requirements.txt
 ```
+## ⚠️Important
+**Ensure that the scaling factor in the system display settings is set to 100%, Otherwise, in accordance with the following procedure (Windows11):**
 
+1. Open system settings
+2. Click System on the left sidebar
+3. Click Display
+4. Change the Scale to 100%
 
 ## 🕹Usage
 Inside your AutoNodestone directory, open a command prompt and run : 
@@ -58,6 +64,7 @@ https://user-images.githubusercontent.com/58682521/190847883-f9d4871d-e10c-4321-
 <br/>
 
  3. Scan Nodestones by clicking `Scan Nodestones` button.
+ - If no nodestones find, do the step 2
 
 https://user-images.githubusercontent.com/58682521/190847892-e79339c5-fca3-4f98-a58a-4be6c7ab9983.mp4
 

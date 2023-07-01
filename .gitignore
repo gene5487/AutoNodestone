@@ -1,0 +1,10 @@
+.vscode
+__pycache__
+*.jpg
+*.png
+!instruction_img/**/*.png
+!job_icon/**/*.png
+!other_img/**/*.png
+!skill_icon/**/*.png
+build
+dist

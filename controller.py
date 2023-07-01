@@ -128,7 +128,7 @@ def locate_25node_at_once(skill_icon_path_list, page, n_trinode_inlist, job_name
     if query_icon_position is None:
         print('Unable to detect V-matrix UI.')
         return [], [], [], '', []
-    v_matrix_region = [query_icon_position[0] - 172, query_icon_position[1] - 110, 596, 80]
+    v_matrix_region = [query_icon_position[0] - 255, query_icon_position[1] - 110, 596, 80]
     screenshot_name = rf'./V-matrix_{job_name}_{page}.jpg'
     pyautogui.screenshot(screenshot_name, region=v_matrix_region)
 
@@ -142,9 +142,20 @@ def locate_25node_at_once(skill_icon_path_list, page, n_trinode_inlist, job_name
     for i, (partial_skill_img_list, part) in enumerate(zip(all_partial_skill_img_list, part_list)):
         for j, (partial_img, skill_name) in enumerate(zip(partial_skill_img_list, skill_name_list)):
             # print(f'Detecting {part} of {skill_name} : ')
-            position_list = pyautogui.locateAllOnScreen(partial_img,
+            find_list = list(pyautogui.locateAllOnScreen(partial_img,
                                                         region=v_matrix_region,
-                                                        confidence=threshold)  # (left, top, width, height) tuples
+                                                        confidence=threshold))  # (left, top, width, height) tuples
+            
+            # 去除相邻像素的匹配结果
+            position_list = [find_list[0]] if len(find_list) > 0 else []
+            for fi in range(1, len(find_list)):
+                diffX = find_list[fi].left - find_list[fi-1].left
+                diffY = find_list[fi].top - find_list[fi-1].top
+                if diffX <= 5 and diffY <= 5:
+                    continue
+                else:
+                    position_list.append(find_list[fi])
+        
             for position in position_list:
                 col = int((position[0] - v_matrix_region[0] - 15) / 51)  # 15 is left most offset
 
