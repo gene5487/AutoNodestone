@@ -128,7 +128,9 @@ def locate_25node_at_once(skill_icon_path_list, page, n_trinode_inlist, job_name
     if query_icon_position is None:
         print('Unable to detect V-matrix UI.')
         return [], [], [], '', []
-    v_matrix_region = [query_icon_position[0] - 172, query_icon_position[1] - 110, 596, 80]
+    # v_matrix_region = [query_icon_position[0] - 172, query_icon_position[1] - 110, 596, 80]
+    # 2024/01/23: update v_matrix_region for new UI
+    v_matrix_region = [query_icon_position[0] - 256, query_icon_position[1] - 110, 596, 80]
     screenshot_name = rf'./V-matrix_{job_name}_{page}.jpg'
     pyautogui.screenshot(screenshot_name, region=v_matrix_region)
 
