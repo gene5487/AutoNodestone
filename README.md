@@ -30,25 +30,30 @@ pip install -r requirements.txt
 
 
 ## 🕹Usage
+1. 🛠 Set up your MapleStory resolution \
+Make sure your MapleStory resolution is set to `1280x720` in windowed mode.
+Otherwise, image recognition will not work properly.
+
+2. 🚀 Launch the AutoNodestone GUI \
 Inside your AutoNodestone directory, open a command prompt and run : 
 ```
 python AutoNodestone_PyQt_start.py
 ```
 OR\
 Just doble click **AutoNodestone_PyQt_start.exe**
-<br/>
+
 <br/>
 
-And then follow the instruction below :
+3. 🎯 Follow the on-screen instructions
 
- 1. Select the job of your charater.
+ I. Select the job of your charater.
 
 https://user-images.githubusercontent.com/58682521/190847875-cbe0f91c-385f-4805-84c9-2eff2a624af4.mp4
 
 <br/>
 <br/>
 
- 2. *(Optional)* If yod find that the skill icons doesn't match the skill icons in-game :
+ II. *(Optional)* If yod find that the skill icons doesn't match the skill icons in-game :
   - Open the skill icon directory by clicking `Open directory` and delete those unneeded icons.
   - Generate skill icons from game by clicking `Generate skill icon`, the program will detect skill icons your screen and save to skill icon directory.
 
@@ -57,14 +62,14 @@ https://user-images.githubusercontent.com/58682521/190847883-f9d4871d-e10c-4321-
 <br/>
 <br/>
 
- 3. Scan Nodestones by clicking `Scan Nodestones` button.
+ III. Scan Nodestones by clicking `Scan Nodestones` button.
 
 https://user-images.githubusercontent.com/58682521/190847892-e79339c5-fca3-4f98-a58a-4be6c7ab9983.mp4
 
 <br/>
 <br/>
 
- 4. Select your required skills in  `Skill selection` area, and get combination by clicking `Get combination`.
+ IV. Select your required skills in  `Skill selection` area, and get combination by clicking `Get combination`.
 
 https://user-images.githubusercontent.com/58682521/190847901-8cc73b60-ec3b-4a0a-bdf2-2ae647388372.mp4
 
@@ -72,7 +77,7 @@ https://user-images.githubusercontent.com/58682521/190847901-8cc73b60-ec3b-4a0a-
 <br/>
 
 
- 5. Equip the Nodestones in the combination.
+ V. Equip the Nodestones in the combination.
 
 [123](https://user-images.githubusercontent.com/58682521/190847908-64d81bcb-2711-4c6f-a9b6-28dcff94595c.mp4)
 
